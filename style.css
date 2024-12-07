@@ -7,10 +7,25 @@
   src: url(resources/fonts/Doto-VariableFont_ROND\,wght.ttf);
 }
 body {
-  overflow-y: hidden !important;
+  overflow: hidden !important;
 }
 
-main::after {
+.screen-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100dvw;
+  height: 100dvh;
+  background-color: darkgreen;
+  box-shadow: 0px 0px 200px 150px inset black;
+  animation: screenFlicker 10s infinite;
+}
+@keyframes screenFlicker {
+  50% {
+    filter: brightness(80%);
+  }
+}
+.screen-overlay::after {
   content: "";
   position: absolute;
   top: 0;
@@ -18,20 +33,42 @@ main::after {
   width: 100%;
   height: 100%;
   z-index: 1;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0) 7%, rgb(0, 0, 0) 100%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0) 7%, rgba(0, 0, 0, 0.4) 100%);
   pointer-events: none;
   user-select: none;
   --webkit-user-select: none;
 }
+.screen-overlay .crt::before {
+  content: " ";
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient(to bottom, rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+  text-shadow: 0em 0em 0.5em lime;
+  background-size: 100% 8px;
+  pointer-events: none;
+}
+.screen-overlay .scanline {
+  position: absolute;
+  bottom: 100%;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0) 0%, rgba(255, 255, 255, 0.2) 10%, rgba(0, 0, 0, 0.1) 100%);
+  opacity: 0.1;
+  animation: scanline 10s linear infinite;
+}
+@keyframes scanline {
+  to {
+    bottom: 0%;
+  }
+}
 
 .container {
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 60px;
+  font-size: 50px;
   padding: 60px;
   color: white;
-}
-.container h1:hover {
-  text-shadow: 0px 0px 6px rgb(255, 255, 255);
+  width: 60%;
 }
 
 .wrap-backdrop {
@@ -51,7 +88,10 @@ main::after {
   height: 100dvh;
   background: green;
   color: lime;
-  font-size: 24px;
+  font-size: 16px;
+  /* resulting css */
+  filter: contrast(280%) brightness(100%);
+  background: linear-gradient(90deg, rgb(10, 220, 10), rgba(0, 0, 0, 0)), url("data:image/svg+xml,%3Csvg viewBox='0 0 239 239' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='3.16' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
   transform: rotateX(20deg) translate(-4px, -100px) scale(1.2);
 }
 .backdrop::before {
@@ -69,8 +109,10 @@ main::after {
   --webkit-user-select: none;
 }
 .backdrop span {
+  font-family: monospace;
   display: inline-block;
   margin: 1px;
+  font-size: 20px;
   color: lime;
   transition: all 0.3s ease;
   background: transparent;

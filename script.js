@@ -1,3 +1,8 @@
+// This was going to be a portfolio placeholder with a simple above-the-fold title screen with my socials. 
+// I wanted to recreate a cover similar to "Principles of Finance with Excel" third edition textbook by Simon Benninga & Tal Mofkadi
+// But due to performance issues and the fact that I'm not a fan of the design, I decided to scrap it instead, but I'm keeping the code here for safekeeping
+// I'll embark on a similar project oncemore in the future, but with a different design and approach utilizing Three.JS and the <canvas> tag as recommended by a colleague 
+
 console.log("Hello world!");
 
 // Ideas
@@ -15,64 +20,70 @@ document.addEventListener("DOMContentLoaded", function () {
     let numbers = generateNumbers();
     updateBackdrop(numbers, backdrop);
 
-    // Apply a special class to random numbers every few seconds
-    setInterval(() => {
-        //! applySpecialClass(numbers, backdrop);
-        // changeRandomNumbers(numbers)
-        // console.log("Called.")
-    }, 2000); // Every 2 seconds
-
-
-    // Scrambles header title with random letters as a hover effect before returning to original state
-    // Commented out during development
-    //! const letters = "abcedefghijklmnoprqstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-    document.querySelector("h1").onmouseover = event =>{
-        let iterations = 0;
-        
-        const interval = setInterval(() => {
-            event.target.innerText = event.target.innerText.split("")
-                .map((letter, index) => {
-
-                    if (index < iterations){
-                        return event.target.dataset.value[index];
-                    }
-
-                    return letters[Math.floor(Math.random() * 52)]; // 52 for letters.length
-                })
-                .join("");
-
-            // Scrambles for as many letters as shown
-            if  (iterations >= event.target.dataset.value.length) 
-                clearInterval(interval);
-
-            iterations++;
-       }, 30); // Every 30 miliseconds
+    let numberCurtain = true;
+    if (numberCurtain) {
+        // Apply a special class to random numbers every few seconds
+        setInterval(() => {
+            applySpecialClass(numbers, backdrop);
+            // changeRandomNumbers(numbers)
+        }, 2000); // Every 2 seconds
     }
 
-    // An attempt to create a box shadow box effect as a way to "highlight" the backdrop
-    // Doesn't work the way I thought it would... not sure what's going on yet 
-    document.querySelector(".backdrop").onmousemove = event => {
-        // Get the dimensions and position of the element
-        const rect = event.target.getBoundingClientRect();
-    
-        // Calculate mouse position relative to the element
-        const x = event.clientX - rect.left; 
-        const y = event.clientY - rect.top;  
-    
-        // Set a fixed box-shadow size
-        const shadowWidth = 100; 
-        const shadowHeight = 100; 
-        const blurRadius = 0;
-    
-        // Update the box-shadow property
-        event.target.style.boxShadow = `
-            ${x - shadowWidth / 2}px 
-            ${y - shadowHeight / 2}px 
-            ${blurRadius}px 
-            lime inset
-        `;
-    };
+    if (scrambleText){
+        // Scrambles header title with random letters as a hover effect before returning to original state
+        const letters = "abcedefghijklmnoprqstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+        document.querySelector("h1").onmouseover = event =>{
+            let iterations = 0;
+            
+            const interval = setInterval(() => {
+                event.target.innerText = event.target.innerText.split("")
+                    .map((letter, index) => {
+
+                        if (index < iterations){
+                            return event.target.dataset.value[index];
+                        }
+
+                        return letters[Math.floor(Math.random() * 52)]; // 52 for letters.length
+                    })
+                    .join("");
+
+                // Scrambles for as many letters as shown
+                if  (iterations >= event.target.dataset.value.length) 
+                    clearInterval(interval);
+
+                iterations++;
+        }, 30); // Every 30 miliseconds
+        }
+    }
+
+    if (testBoxShadow) {
+
+        // An attempt to create a box shadow box effect as a way to "highlight" the backdro
+        // Doesn't work the way I thought it would... not sure what's going on yet 
+
+        document.querySelector(".backdrop").onmousemove = event => {
+            // Get the dimensions and position of the element
+            const rect = event.target.getBoundingClientRect();
+        
+            // Calculate mouse position relative to the element
+            const x = event.clientX - rect.left; 
+            const y = event.clientY - rect.top;  
+        
+            // Set a fixed box-shadow size
+            const shadowWidth = 100; 
+            const shadowHeight = 100; 
+            const blurRadius = 0;
+        
+            // Update the box-shadow property
+            event.target.style.boxShadow = `
+                ${x - shadowWidth / 2}px 
+                ${y - shadowHeight / 2}px 
+                ${blurRadius}px 
+                lime inset
+            `;
+        };
+    }
 });
 
 // Generates number curtain with random values
